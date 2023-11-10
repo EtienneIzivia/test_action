@@ -1,0 +1,19 @@
+name: Python Code Quality Check
+
+on: [push, pull_request]
+
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install flake8
+      run: pip install flake8
+    - name: Run flake8
+      run: flake8 .
+      continue-on-error: false
