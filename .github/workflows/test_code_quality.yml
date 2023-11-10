@@ -19,9 +19,9 @@ jobs:
     - name: Get changed Python files for pull request
       id: files
       run: |
-          git fetch origin ${{ github.base_ref }}
-          files=$(git diff --name-only origin/${{ github.base_ref }} | grep '\.py$' || echo "")
-          echo "::set-output name=files::$files"
+        git fetch origin ${GITHUB_BASE_REF}:${GITHUB_BASE_REF}
+        files=$(git diff --name-only $GITHUB_BASE_REF | grep '\.py$' || echo "")
+        echo "::set-output name=files::$files"
     - name: Run flake8 on changed files
       run: |
         if [ -n "${{ steps.files.outputs.files }}" ]; then
