@@ -27,26 +27,26 @@ jobs:
         pip install flake8
         pip install bandit
 
-    - name: Run flake8
+    - name: Run flake8 and set failure flag
       if: env.changed_files
-      run: flake8 $changed_files > flake8_output.txt 2>&1  || echo "flake8 Errors detected"
+      run: |
+          flake8 $changed_files > flake8_output.txt 2>&1
+          if [ -s flake8_output.txt ]; then
+            echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
+          fi
   
     - name: Display flake8 errors if any
-      if: env.changed_files && failure()
-      run: |
-          if [ -s flake8_output.txt ]; then
-            cat flake8_output.txt
-            exit 1
-          fi
+      if: env.FLAKE8_FAILED == '1'
+      run: cat flake8_output.txt
   
-    - name: Run Bandit
+    - name: Run Bandit and set failure flag
       if: env.changed_files
-      run: bandit -r $changed_files -o bandit_output.txt
+      run: |
+          bandit -r $changed_files -o bandit_output.txt
+          if [ -s bandit_output.txt ]; then
+            echo "BANDIT_FAILED=1" >> $GITHUB_ENV
+          fi
   
     - name: Display Bandit errors if any
-      if: env.changed_files && failure()
-      run: |
-          if [ -s bandit_output.txt ]; then
-            cat bandit_output.txt
-            exit 1
-          fi
+      if: env.BANDIT_FAILED == '1'
+      run: cat bandit_output.txt
