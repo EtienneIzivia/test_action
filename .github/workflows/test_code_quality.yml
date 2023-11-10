@@ -19,7 +19,11 @@ jobs:
     - name: Get changed Python files for pull request
       id: files
       run: |
-        git diff --name-only HEAD^ HEAD | grep '\.py$' > changed_files.txt
+        if git rev-parse HEAD^ > /dev/null 2>&1; then
+          git diff --name-only HEAD^ HEAD | grep '\.py$' > changed_files.txt
+        else
+          git diff --name-only HEAD | grep '\.py$' > changed_files.txt
+        fi
         if [ -s changed_files.txt ]; then
           echo "::set-output name=files::$(cat changed_files.txt)"
         else
