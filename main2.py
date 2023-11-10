@@ -14,4 +14,5 @@ def calculate_sum(a, b):
 
 # Example usage
 result = calculate_sum(3, 5)
+print("OK")
 print("The sum is:", result)
