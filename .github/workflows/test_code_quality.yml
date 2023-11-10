@@ -31,7 +31,7 @@ jobs:
       if: env.changed_files
         
       run: |
-          flake8 $changed_files > flake8_output.txt 
+          flake8 $changed_files > flake8_output.txt 2>&1
       
   
     - name: Display flake8 errors if any
