@@ -19,7 +19,7 @@ jobs:
     - name: Get changed Python files for push
       id: files
       run: |
-          git fetch main
+          git fetch origin/main
           files=$(git diff --name-only ${{ github.sha }} origin/${{ github.base_ref }} | grep '\.py$' || echo "")
           echo "::set-output name=files::$files
 
