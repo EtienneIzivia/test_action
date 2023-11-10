@@ -16,13 +16,12 @@ jobs:
       run: |
         pip install flake8
         pip install bandit
-    - name: Get changed Python files for push
+    - name: Get changed Python files for pull request
       id: files
       run: |
-          git fetch origin/main
-          files=$(git diff --name-only ${{ github.sha }} origin/${{ github.base_ref }} | grep '\.py$' || echo "")
-          echo "::set-output name=files::$files
-
+          git fetch origin ${{ github.base_ref }}
+          files=$(git diff --name-only origin/${{ github.base_ref }} | grep '\.py$' || echo "")
+          echo "::set-output name=files::$files"
     - name: Run flake8 on changed files
       run: |
         if [ -n "${{ steps.files.outputs.files }}" ]; then
