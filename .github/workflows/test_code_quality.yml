@@ -1,9 +1,9 @@
-name: Python Code Quality Check
+name: Python Code Quality and Security Check
 
 on: [push, pull_request]
 
 jobs:
-  flake8:
+  code-check:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository code
@@ -12,10 +12,31 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-    - name: Install flake8
-      run: pip install flake8
-    - name: Run flake8
-      run: flake8 . > /dev/null 2>&1 || (echo "Errors detected" && flake8 . > flake8_output.txt)
-    - name: Display flake8 errors if any
+    - name: Install flake8 and Bandit
+      run: |
+        pip install flake8
+        pip install bandit
+    - name: Get changed Python files
+      id: files
+      run: |
+        files=$(git diff --name-only ${{ github.sha }} | grep '\.py$' || echo "")
+        echo "::set-output name=files::$files"
+    - name: Run flake8 on changed files
+      run: |
+        if [ -n "${{ steps.files.outputs.files }}" ]; then
+          flake8 ${{ steps.files.outputs.files }} > /dev/null 2>&1 || (echo "flake8 Errors detected" && flake8 ${{ steps.files.outputs.files }} > flake8_output.txt)
+        fi
+    - name: Run Bandit on changed files
+      run: |
+        if [ -n "${{ steps.files.outputs.files }}" ]; then
+          bandit -r ${{ steps.files.outputs.files }} -o bandit_output.txt
+        fi
+    - name: Display Code Quality or Style errors if any
       if: failure()
       run: cat flake8_output.txt
+    - name: Display Security errors if any
+      if: always()
+      run: |
+        if [ -s bandit_output.txt ]; then
+          cat bandit_output.txt
+        fi
