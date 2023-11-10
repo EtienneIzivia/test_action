@@ -3,7 +3,7 @@ name: Python Code Quality and Security Check
 on: [push]
 
 jobs:
-  code-check:
+  check_code_quality_and_security:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
