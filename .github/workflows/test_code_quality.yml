@@ -31,7 +31,7 @@ jobs:
       if: env.changed_files
         
       run: |
-          flake8 $changed_files > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
+          flake8 $changed_files > flake8_output.txt 2>&1 
       
   
     - name: Display flake8 errors if any
@@ -41,7 +41,7 @@ jobs:
     - name: Run Bandit
       if: env.changed_files
       run: |
-          bandit -r $changed_files -o bandit_output.txt || echo "Bandit Issues detected"
+          bandit -r $changed_files -o bandit_output.txt 
           
   
     - name: Display Bandit errors if any
