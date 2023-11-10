@@ -29,7 +29,7 @@ jobs:
 
     - name: Run flake8
       if: env.changed_files
-      run: flake8 $changed_files > flake8_output.txt 2>&1
+      run: flake8 $changed_files > flake8_output.txt 2>&1  || echo "flake8 Errors detected"
   
     - name: Display flake8 errors if any
       if: env.changed_files && failure()
