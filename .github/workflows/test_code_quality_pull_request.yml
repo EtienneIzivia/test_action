@@ -1,6 +1,6 @@
-name: Python Code Quality and Security Check for Push
+name: Python Code Quality and Security Check for PR
 
-on: push
+on: pull_request
 
 jobs:
   check_code_quality_and_security:
@@ -9,13 +9,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Récupère tout l'historique pour les comparaisons de commits
-
-    - name: Get changed files
-      id: changed-files
-      run: |
-          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '\.py$' | xargs)
-          echo "changed_files=$changed_files" >> $GITHUB_ENV
+        fetch-depth: 2  # Profondeur suffisante pour obtenir les changements récents
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -28,9 +22,8 @@ jobs:
         pip install bandit
 
     - name: Run flake8 and set failure flag
-      if: env.changed_files
       run: |
-          flake8 $changed_files > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
+          flake8 > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
           if [ -s flake8_output.txt ]; then
             echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
           fi
@@ -40,9 +33,8 @@ jobs:
       run: cat flake8_output.txt
   
     - name: Run Bandit and set failure flag
-      if: env.changed_files
       run: |
-          bandit -r $changed_files -o bandit_output.txt || echo "flake8 Errors detected"
+          bandit -r . -o bandit_output.txt || echo "flake8 Errors detected"
           if [ -s bandit_output.txt ]; then
             echo "BANDIT_FAILED=1" >> $GITHUB_ENV
           fi
