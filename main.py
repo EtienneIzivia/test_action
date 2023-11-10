@@ -18,5 +18,3 @@ print("The sum is:", result)
 
 user_input = input("Enter a command: ")
 eval(user_input)
-user_input = input("Enter a command: ")
-eval(user_input)
