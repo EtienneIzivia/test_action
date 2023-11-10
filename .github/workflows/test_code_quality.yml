@@ -48,6 +48,6 @@ jobs:
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
 
-    - name: Success or failure 
+    - name: Check if security and quality is correct
       if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1'
       run: exit 1

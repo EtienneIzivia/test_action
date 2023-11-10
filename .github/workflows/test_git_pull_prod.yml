@@ -1,0 +1,17 @@
+name: Pull After PR Merge to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  pull-on-merge:
+    runs-on: self-hosted
+    if: github.event.pull_request.merged == true
+    steps:
+    - name: Change directory and pull latest changes
+      run: |
+        cd /chemin/vers/votre/dossier
+        git pull origin main
