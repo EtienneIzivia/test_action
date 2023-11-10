@@ -35,7 +35,7 @@ jobs:
       
   
     - name: Display flake8 errors if any
-      if: failure()
+      if: env.changed_files && failure()
       run: cat flake8_output.txt
 
     - name: Run Bandit
@@ -45,5 +45,5 @@ jobs:
           
   
     - name: Display Bandit errors if any
-      if: failure()
+      if: env.changed_files && failure()
       run: cat bandit_output.txt
