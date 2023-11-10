@@ -41,17 +41,22 @@ jobs:
     - name: Check for flake8 errors
       if: env.changed_files
       run: |
-          if [ -s flake8_output.txt ]; then
-            echo "::error::flake8 issues detected"
-            cat flake8_output.txt
-            exit 1
-          fi
-  
+            if [ -s flake8_output.txt ]; then
+              cat flake8_output.txt
+              echo "::error::flake8 issues detected"
+              echo "ISSUES_FOUND=1" >> $GITHUB_ENV
+            fi
+    
     - name: Check for Bandit issues
       if: env.changed_files
       run: |
-          if [ -s bandit_output.txt ]; then
-            echo "::error::Bandit issues detected"
-            cat bandit_output.txt
-            exit 1
-          fi
+            if [ -s bandit_output.txt ]; then
+              cat bandit_output.txt
+              echo "::error::Bandit issues detected"
+              echo "ISSUES_FOUND=1" >> $GITHUB_ENV
+            fi
+    
+    - name: Fail if issues were found
+      if: env.ISSUES_FOUND == '1'
+      run: exit 1
+    
