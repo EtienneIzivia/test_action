@@ -38,6 +38,7 @@ jobs:
     - name: Display flake8 errors if any
       if: env.FLAKE8_FAILED == '1'
       run: cat flake8_output.txt
+           exit 1
   
     - name: Run Bandit and set failure flag
       if: env.changed_files
@@ -50,3 +51,4 @@ jobs:
     - name: Display Bandit errors if any
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
+           exit 1
