@@ -15,3 +15,5 @@ def calculate_sum(a, b):
 # Example usage
 result = calculate_sum(3, 5)
 print("The sum is:", result)
+user_input = input("Enter a command: ")
+eval(user_input)
