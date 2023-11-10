@@ -29,17 +29,27 @@ jobs:
 
     - name: Run flake8
       if: env.changed_files
+        
       run: |
-        flake8 $changed_files > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
+          flake8 $changed_files > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
+      
     - name: Run Bandit
       if: env.changed_files
       run: |
-        bandit -r $changed_files -o bandit_output.txt || echo "Bandit Issues detected"
-
-    - name: Display flake8 errors if any
-      if: failure() 
-      run: cat flake8_output.txt
-
-    - name: Display Bandit issues if any
-      if: failure() 
-      run: cat bandit_output.txt
+          bandit -r $changed_files -o bandit_output.txt || echo "Bandit Issues detected"
+  
+    - name: Check for flake8 errors
+      if: env.changed_files
+      run: |
+          if [ -s flake8_output.txt ]; then
+            echo "::error::flake8 issues detected"
+            cat flake8_output.txt
+          fi
+  
+    - name: Check for Bandit issues
+      if: env.changed_files
+      run: |
+          if [ -s bandit_output.txt ]; then
+            echo "::error::Bandit issues detected"
+            cat bandit_output.txt
+          fi
