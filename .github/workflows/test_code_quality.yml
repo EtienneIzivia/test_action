@@ -1,6 +1,6 @@
 name: Python Code Quality and Security Check
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   code-check:
@@ -19,9 +19,12 @@ jobs:
     - name: Get changed Python files for pull request
       id: files
       run: |
-        git fetch origin ${GITHUB_BASE_REF}:${GITHUB_BASE_REF}
-        files=$(git diff --name-only $GITHUB_BASE_REF | grep '\.py$' || echo "")
-        echo "::set-output name=files::$files"
+        git diff --name-only HEAD^ HEAD | grep '\.py$' > changed_files.txt
+        if [ -s changed_files.txt ]; then
+          echo "::set-output name=files::$(cat changed_files.txt)"
+        else
+          echo "::set-output name=files::"
+        fi
     - name: Run flake8 on changed files
       run: |
         if [ -n "${{ steps.files.outputs.files }}" ]; then
