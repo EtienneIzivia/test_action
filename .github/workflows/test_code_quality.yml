@@ -44,6 +44,7 @@ jobs:
           if [ -s flake8_output.txt ]; then
             echo "::error::flake8 issues detected"
             cat flake8_output.txt
+            exit 1
           fi
   
     - name: Check for Bandit issues
@@ -52,4 +53,5 @@ jobs:
           if [ -s bandit_output.txt ]; then
             echo "::error::Bandit issues detected"
             cat bandit_output.txt
+            exit 1
           fi
