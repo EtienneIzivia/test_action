@@ -37,9 +37,9 @@ jobs:
         bandit -r $changed_files -o bandit_output.txt || echo "Bandit Issues detected"
 
     - name: Display flake8 errors if any
-      if: failure() && steps.changed-files.outputs.changed_files
+      if: failure() 
       run: cat flake8_output.txt
 
     - name: Display Bandit issues if any
-      if: failure() && steps.changed-files.outputs.changed_files
+      if: failure() 
       run: cat bandit_output.txt
