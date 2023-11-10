@@ -21,28 +21,28 @@ jobs:
         pip install flake8
         pip install bandit
 
-    - name: Run flake8 and set failure flag
+    - name: Check quality and style of the code
       run: |
           flake8 > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
           if [ -s flake8_output.txt ]; then
             echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
           fi
   
-    - name: Display flake8 errors if any
+    - name: Display problem of quality and style if any
       if: env.FLAKE8_FAILED == '1'
       run: cat flake8_output.txt
   
-    - name: Run Bandit and set failure flag
+    - name: Check the security of the code 
       run: |
           bandit -r . -o bandit_output.txt || echo "flake8 Errors detected"
           if [ -s bandit_output.txt ]; then
             echo "BANDIT_FAILED=1" >> $GITHUB_ENV
           fi
   
-    - name: Display Bandit errors if any
+    - name: Display problem of security if any
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
 
-    - name: Success or failure 
+    - name: Check if Action need to fail
       if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1'
       run: exit 1
