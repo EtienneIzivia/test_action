@@ -30,7 +30,7 @@ jobs:
     - name: Run flake8 and set failure flag
       if: env.changed_files
       run: |
-          flake8 $changed_files > flake8_output.txt 2>&1
+          flake8 $changed_files > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
           if [ -s flake8_output.txt ]; then
             echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
           fi
@@ -42,7 +42,7 @@ jobs:
     - name: Run Bandit and set failure flag
       if: env.changed_files
       run: |
-          bandit -r $changed_files -o bandit_output.txt
+          bandit -r $changed_files -o bandit_output.txt || echo "flake8 Errors detected"
           if [ -s bandit_output.txt ]; then
             echo "BANDIT_FAILED=1" >> $GITHUB_ENV
           fi
