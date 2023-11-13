@@ -27,4 +27,3 @@ print("The sum is:", RESULT)
 user_input = input("Enter a command: ")
 eval(user_input)
 
-print("Hello world!")   
