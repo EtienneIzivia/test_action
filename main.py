@@ -1,6 +1,9 @@
 """
 test docstring
+
+
 """
+
 
 def calculate_sum(a, b):
     """
@@ -17,5 +20,5 @@ def calculate_sum(a, b):
 
 
 # Example usage
-RESULT= calculate_sum(3, 5)
+RESULT = calculate_sum(3, 5)
 print("The sum is:", RESULT)
