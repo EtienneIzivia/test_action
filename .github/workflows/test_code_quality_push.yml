@@ -44,10 +44,8 @@ jobs:
     - name: Check quality of the code
       if: env.changed_files
       run: |
-          pylint $changed_files > pylint_output.txt 2>&1 || echo "pylint Errors detected"
-          if [ -s pylint_output.txt ]; then
-            echo "PYLINT_FAILED=1" >> $GITHUB_ENV
-          fi
+          pylint $changed_files > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
+
 
     - name: Display problem of quality if any
       if: env.PYLINT_FAILED == '1'
