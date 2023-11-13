@@ -9,19 +9,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 2  
+        fetch-depth: 0 
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
 
-    - name: Install flake8 and Bandit
+    - name: Install flake8 and Bandit and Pylint
       run: |
         pip install flake8
         pip install bandit
+        pip install pylint
 
-    - name: Check quality and style of the code
+
+    - name: Check style of the code
       run: |
           flake8 > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
           if [ -s flake8_output.txt ]; then
@@ -31,18 +33,23 @@ jobs:
     - name: Display problem of quality and style if any
       if: env.FLAKE8_FAILED == '1'
       run: cat flake8_output.txt
-  
+
+    - name: Check quality of the code
+      run: |
+          pylint > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
+
+    - name: Display problem of quality if any
+      if: env.PYLINT_FAILED == '1'
+      run: cat pylint_output.txt
+      
     - name: Check the security of the code 
       run: |
-          bandit -r . -o bandit_output.txt || echo "flake8 Errors detected"
-          if [ -s bandit_output.txt ]; then
-            echo "BANDIT_FAILED=1" >> $GITHUB_ENV
-          fi
+          bandit -r . -o bandit_output.txt || echo "BANDIT_FAILED=1" >> $GITHUB_ENV
   
     - name: Display problem of security if any
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
 
     - name: Check if Action need to fail
-      if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1'
+      if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1' || env.PYLINT_FAILED=='1'
       run: exit 1
