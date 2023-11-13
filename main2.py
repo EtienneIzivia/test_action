@@ -1,3 +1,10 @@
+"""
+test docstring
+
+
+"""
+
+
 def calculate_sum(a, b):
     """
     Calculate and return the sum of two values.
@@ -13,8 +20,5 @@ def calculate_sum(a, b):
 
 
 # Example usage
-result = calculate_sum(3, 5)
-print("OK")
-print("The sum is:", result)
-
-
+RESULT = calculate_sum(3, 5)
+print("The sum is:", RESULT)
