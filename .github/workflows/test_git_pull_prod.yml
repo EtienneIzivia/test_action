@@ -13,5 +13,5 @@ jobs:
     steps:
     - name: Change directory and pull latest changes
       run: |
-        cd /chemin/vers/votre/dossier
-        git pull origin main
+        cd dossier_du_projet
+        git pull 
