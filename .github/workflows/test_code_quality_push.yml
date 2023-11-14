@@ -3,7 +3,7 @@ name: Python Code Quality and Security Check for Push
 on: push
 
 jobs:
-  check_code_quality_and_security:
+  check_code_quality_and_security_push:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

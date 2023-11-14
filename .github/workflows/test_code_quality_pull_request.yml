@@ -3,7 +3,7 @@ name: Python Code Quality and Security Check for PR
 on: pull_request
 
 jobs:
-  check_code_quality_and_security:
+  check_code_quality_and_security_pull_request:
     runs-on: ubuntu-latest
     steps:
     - name: Get all files
