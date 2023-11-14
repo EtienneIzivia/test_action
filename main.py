@@ -27,3 +27,17 @@ print("The sum is:", RESULT)
 user_input = input("Enter a command: ")
 eval(user_input)
 
+
+def insecure_code(password):    
+    
+    temp_file = os.tempnam()
+
+    result = str.split()
+
+    try:
+        print("OK")
+    except:
+        pass
+
+
+    return result
