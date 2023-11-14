@@ -36,7 +36,7 @@ jobs:
 
     - name: Check quality of the code
       run: |
-          pylint > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
+          pylint **/*.py > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
 
     - name: Display quality problem if any
       if: env.PYLINT_FAILED == '1'
