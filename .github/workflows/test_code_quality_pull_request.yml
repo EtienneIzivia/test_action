@@ -50,6 +50,6 @@ jobs:
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
 
-    - name: Check if Action need to fail
+    - name: Check if Pull Request is allowed
       if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1' || env.PYLINT_FAILED=='1'
       run: exit 1
