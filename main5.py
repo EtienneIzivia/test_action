@@ -22,22 +22,3 @@ def calculate_sum(a, b):
 # Example usage
 RESULT = calculate_sum(3, 5)
 print("The sum is:", RESULT)
-
-
-user_input = input("Enter a command: ")
-eval(user_input)
-
-
-def insecure_code(password):    
-    
-    temp_file = os.tempnam()
-
-    result = str.split()
-
-    try:
-        print("OK")
-    except:
-        pass
-
-
-    return result
