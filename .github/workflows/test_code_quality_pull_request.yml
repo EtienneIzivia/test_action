@@ -6,7 +6,7 @@ jobs:
   check_code_quality_and_security:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Get all files
       uses: actions/checkout@v3
       with:
         fetch-depth: 0 
@@ -30,7 +30,7 @@ jobs:
             echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
           fi
   
-    - name: Display problem of quality and style if any
+    - name: Display style problem if any
       if: env.FLAKE8_FAILED == '1'
       run: cat flake8_output.txt
 
@@ -38,15 +38,15 @@ jobs:
       run: |
           pylint > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
 
-    - name: Display problem of quality if any
+    - name: Display quality problem if any
       if: env.PYLINT_FAILED == '1'
       run: cat pylint_output.txt
       
-    - name: Check the security of the code 
+    - name: Check security problem 
       run: |
           bandit -r . -o bandit_output.txt || echo "BANDIT_FAILED=1" >> $GITHUB_ENV
   
-    - name: Display problem of security if any
+    - name: Display security problem if any
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
 

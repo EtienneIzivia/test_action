@@ -22,7 +22,7 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install flake8 and  and Pylint
+    - name: Install flake8 and Bandit and Pylint
       run: |
         pip install flake8
         pip install bandit
@@ -47,7 +47,7 @@ jobs:
           pylint $changed_files > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
 
 
-    - name: Display problem of quality if any
+    - name: Display quality problem if any
       if: env.PYLINT_FAILED == '1'
       run: cat pylint_output.txt
 
