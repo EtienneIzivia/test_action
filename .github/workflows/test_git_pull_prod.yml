@@ -8,10 +8,10 @@ on:
 
 jobs:
   pull-on-merge:
-    runs-on: self-hosted
+    runs-on: [self-hosted,DESK-TEST-MTM]
     if: github.event.pull_request.merged == true
     steps:
     - name: Change directory and pull latest changes
       run: |
-        cd dossier_du_projet
+        cd C:\Users\EtienneMALACARNE\code\test_runner_folder\test_action
         git pull 
