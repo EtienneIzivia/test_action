@@ -1,20 +1,24 @@
-# Python
+"""
+test docstring
 
-import os
 
-def insecure_code(password):
-    # Bandit warning: Using 'mktemp' is insecure and deprecated.
-    temp_file = os.tempnam()
+"""
 
-    # Pylint warning: No value for argument 'x' in unbound method call
-    result = str.split()
 
-    # Flake8 warning: E722 do not use bare 'except'
-    try:
-        do_something()
-    except:
-        pass
+def calculate_sum(a, b):
+    """
+    Calculate and return the sum of two values.
 
-    # Pylint warning: Unused variable 'password'
-    # Flake8 warning: F841 local variable 'password' is assigned to but never used
-    return result
+    Parameters:
+    a (int): The first value.
+    b (int): The second value.
+
+    Returns:
+    int: The sum of a and b.
+    """
+    return a + b
+
+
+# Example usage
+RESULT = calculate_sum(3, 5)
+print("The sum is:", RESULT)
