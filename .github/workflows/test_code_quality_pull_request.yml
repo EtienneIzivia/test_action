@@ -41,7 +41,8 @@ jobs:
       run: cat bandit_output.txt
     - name: Check style of the code (SQL)
       run: |
-          find . -name '*.sql' -print0 | xargs -0 sqlfluff lint > sqlfluff_output.txt 2>&1 || echo "SQLFLUFF_FAILED=1" >> $GITHUB_ENV
+          find . -name '*.sql' -print0 | xargs -0 sqlfluff lint --dialect bigquery > sqlfluff_output.txt 2>&1 || echo "SQLFLUFF_FAILED=1" >> $GITHUB_ENV
+
     - name: Display style problem if any (SQL)
       if: env.SQLFLUFF_FAILED == '1'
       run: cat sqlfluff_output.txt
