@@ -35,56 +35,7 @@ jobs:
       run: cat pylint_output.txt
     - name: Check security problem (Python)
       run: |
-          bandit -r . -o bandit_oname: Python Code Quality and Security Check for PR
-on: pull_request
-jobs:
-  check_code_pull_request:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Get all files
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.11'
-    - name: Install flake8, Bandit, Pylint, and sqlfluff
-      run: |
-        pip install flake8
-        pip install bandit
-        pip install pylint
-        pip install sqlfluff
-    - name: Check style of the code (Python)
-      run: |
-          flake8 > flake8_output.txt 2>&1 || echo "flake8 Errors detected"
-          if [ -s flake8_output.txt ]; then
-            echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
-          fi
-    - name: Display style problem if any (Python)
-      if: env.FLAKE8_FAILED == '1'
-      run: cat flake8_output.txt
-    - name: Check quality of the code (Python)
-      run: |
-          pylint **/*.py > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
-    - name: Display quality problem if any (Python)
-      if: env.PYLINT_FAILED == '1'
-      run: cat pylint_output.txt
-    - name: Check security problem (Python)
-      run: |
           bandit -r . -o bandit_output.txt || echo "BANDIT_FAILED=1" >> $GITHUB_ENV
-    - name: Display security problem if any (Python)
-      if: env.BANDIT_FAILED == '1'
-      run: cat bandit_output.txt
-    - name: Check style of the code (SQL)
-      run: |
-          sqlfluff lint **/*.sql > sqlfluff_output.txt 2>&1 || echo "SQLFLUFF_FAILED=1" >> $GITHUB_ENV
-    - name: Display style problem if any (SQL)
-      if: env.SQLFLUFF_FAILED == '1'
-      run: cat sqlfluff_output.txt
-    - name: Check if Pull Request is allowed
-      if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1' || env.PYLINT_FAILED=='1' || env.SQLFLUFF_FAILED=='1'
-      run: exit 1utput.txt || echo "BANDIT_FAILED=1" >> $GITHUB_ENV
     - name: Display security problem if any (Python)
       if: env.BANDIT_FAILED == '1'
       run: cat bandit_output.txt
