@@ -12,21 +12,21 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
-    - name: Install flake8, Bandit, Pylint, and sqlfluff
+    - name: Install Ruff, Bandit, Pylint, and sqlfluff
       run: |
-        pip install flake8
+        pip install ruff==0.0.78 # Use the latest version of Ruff
         pip install bandit
         pip install pylint
         pip install sqlfluff
-    - name: Check style of the code (Python)
+    - name: Check style of the code (Python) with Ruff
       run: |
-          flake8 > flake8_output.txt 2>&1 || echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
-          if [ -s flake8_output.txt ]; then
-            echo "FLAKE8_FAILED=1" >> $GITHUB_ENV
+          ruff > ruff_output.txt 2>&1 || echo "RUFF_FAILED=1" >> $GITHUB_ENV
+          if [ -s ruff_output.txt ]; then
+            echo "RUFF_FAILED=1" >> $GITHUB_ENV
           fi
-    - name: Display style problem if any (Python)
-      if: env.FLAKE8_FAILED == '1'
-      run: cat flake8_output.txt
+    - name: Display style problem if any (Python) with Ruff
+      if: env.RUFF_FAILED == '1'
+      run: cat ruff_output.txt
     - name: Check quality of the code (Python)
       run: |
           pylint **/*.py > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
@@ -42,10 +42,9 @@ jobs:
     - name: Check style of the code (SQL)
       run: |
           find . -name '*.sql' -print0 | xargs -0 sqlfluff lint --dialect bigquery > sqlfluff_output.txt 2>&1 || echo "SQLFLUFF_FAILED=1" >> $GITHUB_ENV
-
     - name: Display style problem if any (SQL)
       if: env.SQLFLUFF_FAILED == '1'
       run: cat sqlfluff_output.txt
     - name: Check if Pull Request is allowed
-      if: env.BANDIT_FAILED=='1' || env.FLAKE8_FAILED=='1' || env.PYLINT_FAILED=='1' || env.SQLFLUFF_FAILED=='1'
+      if: env.BANDIT_FAILED=='1' || env.RUFF_FAILED=='1' || env.PYLINT_FAILED=='1' || env.SQLFLUFF_FAILED=='1'
       run: exit 1
