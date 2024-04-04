@@ -8,43 +8,32 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
-    - name: Install Ruff, Bandit, Pylint, and sqlfluff
+
+    - name: Install Ruff, Bandit, Pylint, sqlfluff, and Black
       run: |
-        pip install ruff==0.0.78 # Use the latest version of Ruff
+        pip install ruff==0.0.78 # Assurez-vous d'utiliser la dernière version
         pip install bandit
         pip install pylint
         pip install sqlfluff
+        pip install black
+
     - name: Check style of the code (Python) with Ruff
+      run: ruff .
+
+    - name: Check code formatting with Black
+      run: black --check .
+
+    - name: Check quality of the code (Python) with Pylint
+      run: pylint **/*.py
+
+    - name: Check security issues (Python) with Bandit
+      run: bandit -r .
+
+    - name: Check style of the code (SQL) with sqlfluff
       run: |
-          ruff . > ruff_output.txt 2>&1 || echo "RUFF_FAILED=1" >> $GITHUB_ENV
-          if [ -s ruff_output.txt ]; then
-            echo "RUFF_FAILED=1" >> $GITHUB_ENV
-          fi
-    - name: Display style problem if any (Python) with Ruff
-      if: env.RUFF_FAILED == '1'
-      run: cat ruff_output.txt
-    - name: Check quality of the code (Python)
-      run: |
-          pylint **/*.py > pylint_output.txt 2>&1 || echo "PYLINT_FAILED=1" >> $GITHUB_ENV
-    - name: Display quality problem if any (Python)
-      if: env.PYLINT_FAILED == '1'
-      run: cat pylint_output.txt
-    - name: Check security problem (Python)
-      run: |
-          bandit -r . -o bandit_output.txt || echo "BANDIT_FAILED=1" >> $GITHUB_ENV
-    - name: Display security problem if any (Python)
-      if: env.BANDIT_FAILED == '1'
-      run: cat bandit_output.txt
-    - name: Check style of the code (SQL)
-      run: |
-          find . -name '*.sql' -print0 | xargs -0 sqlfluff lint --dialect bigquery > sqlfluff_output.txt 2>&1 || echo "SQLFLUFF_FAILED=1" >> $GITHUB_ENV
-    - name: Display style problem if any (SQL)
-      if: env.SQLFLUFF_FAILED == '1'
-      run: cat sqlfluff_output.txt
-    - name: Check if Pull Request is allowed
-      if: env.BANDIT_FAILED=='1' || env.RUFF_FAILED=='1' || env.PYLINT_FAILED=='1' || env.SQLFLUFF_FAILED=='1'
-      run: exit 1
+          find . -name '*.sql' -print0 | xargs -0 sqlfluff lint --dialect bigquery
