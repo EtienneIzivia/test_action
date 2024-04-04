@@ -20,7 +20,7 @@ jobs:
         pip install sqlfluff
     - name: Check style of the code (Python) with Ruff
       run: |
-          ruff > ruff_output.txt 2>&1 || echo "RUFF_FAILED=1" >> $GITHUB_ENV
+          ruff . > ruff_output.txt 2>&1 || echo "RUFF_FAILED=1" >> $GITHUB_ENV
           if [ -s ruff_output.txt ]; then
             echo "RUFF_FAILED=1" >> $GITHUB_ENV
           fi
