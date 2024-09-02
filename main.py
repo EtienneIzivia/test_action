@@ -4,7 +4,7 @@ test docstring
 
 """
 print("ok")
-
+print(f'ok')
 def calculate_sum(a, b):
     """
     Calculate and return the sum of two values.
