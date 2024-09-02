@@ -3,7 +3,7 @@ test docstring
 
 
 """
-
+print("ok")
 
 def calculate_sum(a, b):
     """
