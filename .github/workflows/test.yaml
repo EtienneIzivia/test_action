@@ -1,0 +1,31 @@
+name: Check compilation and linting
+
+on: pull_request
+
+jobs:
+  check_code_pull_request_for_compilation:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get all files
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install flake8
+
+    - name: Check compilation
+      run: |
+        echo "Starting compilation check..."
+        python3 -m compileall . -f -r 2
+
+    - name: Run Flake8 linting
+      run: |
+        echo "Running Flake8..."
+        flake8 . --select=F --ignore=F401,F403
