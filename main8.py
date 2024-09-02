@@ -18,6 +18,7 @@ def calculate_sum(a, b):
     """
     return a + b
 
+print("ok")
 
 # Example usage
 RESULT = calculate_sum(3, 5)
