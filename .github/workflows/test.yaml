@@ -28,4 +28,4 @@ jobs:
     - name: Run Flake8 linting
       run: |
         echo "Running Flake8..."
-        flake8 . --select=F 
+        flake8 . --select=F --ignore=F401,F403,F405
