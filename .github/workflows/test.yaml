@@ -31,8 +31,9 @@ jobs:
         ruff check . --select F --ignore F401,F403,F405,F601 
     - name: Install Pyre
       run: |
-          pip install pyre-check
-          pyre init  # Initialise la configuration
+          python -m pip install pyre-check
+          pyre init --noninteractive
 
-    - name: Run Pyre
-      run: pyre check
+    - name: Run Pyre Type Check
+      run: |
+          pyre check
