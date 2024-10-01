@@ -32,7 +32,13 @@ jobs:
     - name: Install Pyre
       run: |
           python -m pip install pyre-check
-          pyre init --noninteractive
+    - name: Create Pyre Configuration
+      run: |
+          echo '{
+            "source_directories": ["."],
+            "binary": "/opt/hostedtoolcache/Python/3.10.15/x64/bin/pyre.bin",
+            "typeshed": "/opt/hostedtoolcache/Python/3.10.15/x64/lib/pyre_check/typeshed"
+          }' > .pyre_configuration
 
     - name: Run Pyre Type Check
       run: |
