@@ -29,13 +29,10 @@ jobs:
       run: |
         echo "Running Flake8..."
         ruff check . --select F --ignore F401,F403,F405,F601 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+    - name: Install Pyre
+      run: |
+          pip install pyre-check
+          pyre init  # Initialise la configuration
 
-    - name: Install Pyright
-      run: npm install -g pyright
-
-    - name: Run Pyright
-      run: pyright .
+    - name: Run Pyre
+      run: pyre check
