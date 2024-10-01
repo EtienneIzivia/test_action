@@ -3,6 +3,7 @@ test docstring
 
 
 """
+previous_request_name: str | None = None
 
 
 def calculate_sum(a, b):
